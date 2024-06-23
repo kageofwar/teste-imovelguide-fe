@@ -19,7 +19,14 @@
   
   <div class="flex flex-col justify-center items-center">
     <h2 class="mb-10">Carretores Cadastrados</h2>
-      <div v-for="corretor in corretores" :key="corretores.id" class="grid grid-cols-[5%_40%_20%_20%_15%] space-x-10 [&>*]:border-2 w-[70%]">
+      <div class="h-5 w-[70%] grid grid-cols-[5%_40%_20%_20%_15%] self-center [&>*]:flex [&>*]:items-center [&>*]:justify-center [&>*]:ring-2 [&>*]:ring-slate-700">
+        <p class="">ID</p>
+        <p>Nome</p>
+        <p>CPF</p>
+        <p>Cresci</p>
+        <p>Ação</p>
+      </div>
+      <div v-for="corretor in corretores" :key="corretores.id" class="grid grid-cols-[5%_40%_20%_20%_15%] [&>*]:p-1 [&>*]:ml-2 [&>*]:border-2 w-[70%] [&>*]:text-[2vh]">
         <div class="">
           <p>{{ corretor.id }}</p>
         </div>
@@ -49,21 +56,26 @@
     async handleSubmit(e) {
       const formData = new FormData(e.target);
       try {
-        const res = await fetch("/api", {
+        const res = await fetch("http://127.0.0.1:8000/api/corretor", {
         method: "POST",
         body: formData
-      })
-      } catch(err) {
-        console.log(err.response)
+      });
+
+      if(res.ok) {
+        alert('cadastrado com sucesso!')
+        location.reload(); 
+        }
       }
       
+      catch(err) {
+        console.log(err);
+      }
     }
   },
     mounted() {
       fetch('http://127.0.0.1:8000/api/corretores')
           .then(api => api.json())
-          .then(data => { this.corretores = data,
-              console.log(this.corretores) });
+          .then(data => { this.corretores = data });
     }
   }
 </script>
